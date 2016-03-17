@@ -26,6 +26,11 @@ import org.slf4j.LoggerFactory;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 
+//
+// you can call the servlet like this to test it
+// http://localhost:4510/bin/vegas?path=/content/aemcodingerrors/en
+//
+
 @Component(metatype=true)
 @SlingServlet(paths="/bin/vegas", methods="GET", name="Las Vegas servlet", metatype=true, generateComponent=false)
 public class VegasServlet extends SlingAllMethodsServlet {
