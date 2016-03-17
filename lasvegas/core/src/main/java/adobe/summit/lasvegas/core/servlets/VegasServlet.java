@@ -9,6 +9,7 @@ import javax.jcr.Node;
 import javax.servlet.ServletException;
 
 import org.apache.felix.scr.annotations.Activate;
+import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
@@ -25,7 +26,8 @@ import org.slf4j.LoggerFactory;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
 
-@SlingServlet(paths="/bin/vegas", methods="GET", name="Las Vegas servlet", metatype=true)
+@Component(metatype=true)
+@SlingServlet(paths="/bin/vegas", methods="GET", name="Las Vegas servlet", metatype=true, generateComponent=false)
 public class VegasServlet extends SlingAllMethodsServlet {
 	
     private static final Logger LOGGER = LoggerFactory.getLogger(VegasServlet.class);
