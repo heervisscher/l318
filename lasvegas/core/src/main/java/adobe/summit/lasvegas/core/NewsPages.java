@@ -76,13 +76,14 @@ public class NewsPages extends WCMUse {
             		if ( contentNode.hasNode("par")) {
             			NodeIterator parNodes = contentNode.getNode("par").getNodes();
             			while ( parNodes.hasNext()) {
+            				
             				Node parNode = parNodes.nextNode();
             				if ( parNode.getProperty("sling:resourceType").getString().endsWith("/text")) {
-            					if ( model.getIntroText() != null ) {
+            					if ( model.getIntroText() == null ) {
             						model.setIntroText(parNode.getProperty("text").getString());
             					}
             				} else if ( parNode.getProperty("sling:resourceType").getString().endsWith("/image") ) {
-            					if ( model.getImagePath() != null) {
+            					if ( model.getImagePath() == null) {
             						model.setImagePath(parNode.getProperty("fileReference").getString());	
             					}
             				}

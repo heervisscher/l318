@@ -45,7 +45,10 @@ public class NewsPageModel {
 		this.imagePath = imagePath;
 	}
 	public String getIntroText() {
-		return xssapi.filterHTML(introText);
+		if ( introText != null) {
+			return xssapi.filterHTML(introText);
+		}
+		return introText;
 	}
 	public void setIntroText(String introText) {
 		this.introText = introText;
