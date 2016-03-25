@@ -21,19 +21,10 @@
 
     <div class="page__title" data-sly-resource="${'title' @ decorationTagName='div'}"></div>
     
-    <b>test</b>
-    
-	<div data-sly-use.newspages="adobe.summit.lasvegas.core.NewsPages" data-sly-unwrap></div>
-	<div class="pages2" data-sly-list="${newspages.newsPages}">
-	<div class="newstitle" data-sly-test="${item.first}">News</div>
+	<div class="pages2" data-sly-list.child="${currentPage.listChildren}">
+	<div class="newstitle" data-sly-test="${childList.first}">News</div>
 
-		<article class="newspage">
-			<a href="${item.path}.html" class="title">${item.title}</a>
-			<div class="introText">${item.introText @ context='unsafe'}</div>
-			<div data-sly-unwrap data-sly-test="${item.imagePath}">
-			<!-- only show the image, if we have an image path -->
-			<img width="100" src="${item.imagePath}"/>
-			</div>
+		<article class="newspage" data-sly-test="${!child.hideInNav}" data-sly-resource="${child.path @ selectors='summary', wcmmode='disabled'}">
 		</article>
 	</div>
 	

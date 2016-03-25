@@ -1,1 +1,6 @@
-<!--/* empty file, used for the selectors */ -->
+<a href="${resourcePath.path @ extension='html'}" class="title">${resourcePage.title}</a>
+
+<div data-sly-use.summary="adobe.summit.lasvegas.core.NewsPagesSlingModel" class="introText">${summary.textResource.text @ context='html'}</div>
+<div data-sly-test="${summary.imageResource}" data-sly-resource="${summary.imageResource.path}">
+
+</div>
