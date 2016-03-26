@@ -2,19 +2,18 @@ package adobe.summit.lasvegas.core.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.Set;
 
-import javax.jcr.Node;
 import javax.servlet.ServletException;
 
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.ConfigurationPolicy;
 import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
@@ -28,11 +27,16 @@ import com.day.cq.wcm.api.PageManager;
 
 //
 // you can call the servlet like this to test it
-// http://localhost:4510/bin/vegas?path=/content/aemcodingerrors/en
+// http://localhost:4510/content/aemcodingerrors/en/_jcr_content.pageinfo.json
 //
 
-@Component(metatype=true)
-@SlingServlet(paths="/bin/vegas", methods="GET", name="Las Vegas servlet", metatype=true, generateComponent=false)
+@Component(metatype=true, 
+	policy=ConfigurationPolicy.REQUIRE,
+	description="Description of the servlet, shown in the configuration console",
+	label="L318 Las Vegas pageinfo servlet")
+@SlingServlet(resourceTypes="wcm/foundation/components/page", 
+		selectors="pageinfo", extensions="json",
+		methods="GET", generateComponent=false)
 public class VegasServlet extends SlingAllMethodsServlet {
 	
     private static final Logger LOGGER = LoggerFactory.getLogger(VegasServlet.class);
@@ -49,8 +53,9 @@ public class VegasServlet extends SlingAllMethodsServlet {
 	public void activate(ComponentContext context) {
 		configuredProps = (String[])  context.getProperties().get("propertyNames");
 
-		if (configuredProps != null)
-		LOGGER.info("props" + configuredProps.length);
+		if (configuredProps != null) {
+			LOGGER.info("props" + configuredProps.length);
+		}
 	}
 	
 	
@@ -58,51 +63,29 @@ public class VegasServlet extends SlingAllMethodsServlet {
 	protected void doGet(SlingHttpServletRequest request,
 			SlingHttpServletResponse response) throws ServletException,
 			IOException {
-		String path = request.getParameter("path");
 		PageManager pm = request.getResourceResolver().adaptTo(PageManager.class);
-		Page page = pm.getPage(path);
+		Page page = pm.getContainingPage(request.getResource());
 		
-		if ( page != null && isEnabled()) {
-			JSONObject json = new JSONObject();
+		if ( page != null ) {
+			JSONObject json = getJSONForPage(page);
 			PrintWriter pw = response.getWriter();
-			Node pageNode = page.getContentResource().adaptTo(Node.class);
-			for (int i=0; i < configuredProps.length; i++) {
-				try {
-					json.put(configuredProps[i], getPropValue(pageNode, configuredProps[i]) );
-				} catch (JSONException e) {
-					
-				}
-			}
 			pw.print(json.toString());
 			pw.close();
 			
 		}
 	}
-	
-	private String getPropValue( Node node, String propName) {
-		try {
-			return node.getProperty(propName).getString();
-		} catch(Exception e) {
-			return "";
-		}
-	}
 
-	/**
-	 * This servlet is enabled for author instances
-	 * @return
-	 */
-	private boolean isEnabled() {
-		Set<String> runModes = slingSettingsService.getRunModes();
-		Iterator<String> runmodesIt = runModes.iterator();
-		
-		while (runmodesIt.hasNext()) {
-			String runMode = runmodesIt.next();
-			if ( runMode.equals("author")) {
-				return true;
+	private JSONObject getJSONForPage(Page page) {
+		JSONObject json = new JSONObject();
+		ValueMap props = page.getProperties();
+		for (int i=0; i < configuredProps.length; i++) {
+			try {
+				json.put(configuredProps[i], props.get(configuredProps[i], ""));
+			} catch (JSONException e) {
+				
 			}
 		}
-		return false;
+		return json;
 	}
-	
 	
 }
