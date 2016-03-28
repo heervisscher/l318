@@ -17,6 +17,9 @@ import com.adobe.cq.sightly.WCMUse;
 import com.adobe.granite.xss.XSSAPI;
 import com.day.cq.wcm.api.Page;
 
+//
+//This class isn't used anymore in the end result
+//
 public class NewsPages extends WCMUse {
 	
 	

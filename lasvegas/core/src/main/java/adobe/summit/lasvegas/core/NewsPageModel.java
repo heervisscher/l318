@@ -2,6 +2,9 @@ package adobe.summit.lasvegas.core;
 
 import com.adobe.granite.xss.XSSAPI;
 
+//
+// This class isn't used anymore in the end result
+//
 public class NewsPageModel {
 	
 	private String name;
