@@ -54,7 +54,7 @@ public class VegasServlet extends SlingAllMethodsServlet {
 		configuredProps = (String[])  context.getProperties().get("propertyNames");
 
 		if (configuredProps != null) {
-			LOGGER.info("props" + configuredProps.length);
+			LOGGER.info("Number of properperties {0}", configuredProps.length);
 		}
 	}
 	
