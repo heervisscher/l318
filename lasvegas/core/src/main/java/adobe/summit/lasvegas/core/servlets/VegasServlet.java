@@ -50,7 +50,7 @@ public class VegasServlet extends SlingSafeMethodsServlet {
 		configuredProps = PropertiesUtil.toStringArray(context.getProperties().get("propertyNames"));
 
 		if (configuredProps != null) {
-			LOGGER.info("Number of properperties {0}", configuredProps.length);
+			LOGGER.info("Number of properties {0}", configuredProps.length);
 		}
 	}
 	
