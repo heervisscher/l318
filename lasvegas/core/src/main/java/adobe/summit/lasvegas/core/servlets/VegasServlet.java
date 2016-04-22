@@ -9,15 +9,14 @@ import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
 import org.apache.felix.scr.annotations.Property;
-import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.sling.SlingServlet;
+import org.apache.jackrabbit.oak.commons.PropertiesUtil;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.ValueMap;
-import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.JSONObject;
-import org.apache.sling.settings.SlingSettingsService;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +36,10 @@ import com.day.cq.wcm.api.PageManager;
 @SlingServlet(resourceTypes="wcm/foundation/components/page", 
 		selectors="pageinfo", extensions="json",
 		methods="GET", generateComponent=false)
-public class VegasServlet extends SlingAllMethodsServlet {
+public class VegasServlet extends SlingSafeMethodsServlet {
 	
     private static final Logger LOGGER = LoggerFactory.getLogger(VegasServlet.class);
 
-	@Reference
-	private SlingSettingsService slingSettingsService;
-	
 	@Property(label="Properties to be displayed", value={"jcr:title","jcr:description"})
 	private static final String PROPERTY_NAMES = "propertyNames";
 	
@@ -51,7 +47,7 @@ public class VegasServlet extends SlingAllMethodsServlet {
 	
 	@Activate
 	public void activate(ComponentContext context) {
-		configuredProps = (String[])  context.getProperties().get("propertyNames");
+		configuredProps = PropertiesUtil.toStringArray(context.getProperties().get("propertyNames"));
 
 		if (configuredProps != null) {
 			LOGGER.info("Number of properperties {0}", configuredProps.length);
