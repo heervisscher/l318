@@ -417,13 +417,23 @@
 				<scope>provided</scope>
 			</dependency>
 
-			<!-- AEM6.1 dependency -->
+			<!-- AEM6.x dependency -->
 			<dependency>
 				<groupId>com.adobe.aem</groupId>
 				<artifactId>uber-jar</artifactId>
-				<version>6.1.0</version>
+				<version>6.2.0</version>
+				<!-- for AEM6.1 SP1 use this version : <version>6.1.0</version> -->
 				<!-- for AEM6.1 SP1 use this version : <version>6.1.0-SP1-B0001</version> -->
+				<!-- for AEM6.2 use this version : <version>6.2.0</version> -->
 				<classifier>obfuscated-apis</classifier>
+				<scope>provided</scope>
+			</dependency>
+
+			<!--  needed for javax.Inject in AEM6.2 -->
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-atinject_1.0_spec</artifactId>
+				<version>1.0</version>
 				<scope>provided</scope>
 			</dependency>
 
